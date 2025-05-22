@@ -69,74 +69,108 @@ The system uses a memory-augmented approach with a central scratchpad that coord
 - **Asynchronous Jobs**: Long-running jobs are processed in the background using Celery
 - **RESTful API**: Access all functionality through a well-documented FastAPI interface
 - **Admin Interface**: Manage users, jobs, and system settings through the Django admin portal
+- **Modern Frontend**: Sleek React/Next.js frontend for intuitive user interaction
 
-## Installation
+## Getting Started
 
 ### Prerequisites
 
 - Python 3.9+
+- Node.js 18+ (for frontend)
 - Redis (for Celery)
 - API keys for Firecrawl and Anthropic
 
-### Setup
+### Installation
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/universal-agentic-web-scraper.git
-cd universal-agentic-web-scraper
+git clone https://github.com/Amankrah/aws.git
+cd aws
 ```
 
 2. Create a virtual environment:
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows, use: venv\Scripts\activate
+# On Windows:
+venv\Scripts\activate
+# On Unix/MacOS:
+source venv/bin/activate
 ```
 
-3. Install dependencies:
+3. Install backend dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Set up environment variables:
+4. Install frontend dependencies:
 
 ```bash
-export FIRECRAWL_API_KEY=your_firecrawl_api_key
-export ANTHROPIC_API_KEY=your_anthropic_api_key
+cd frontend
+npm install
+cd ..
 ```
 
-5. Run migrations:
+5. Create a `.env` file in the project root:
+
+```
+FIRECRAWL_API_KEY=your_firecrawl_api_key
+ANTHROPIC_API_KEY=your_anthropic_api_key
+DEBUG=True
+SECRET_KEY=your_secret_key
+DATABASE_URL=sqlite:///db.sqlite3
+```
+
+6. Run migrations:
 
 ```bash
 python manage.py migrate
 ```
 
-6. Create a superuser:
+7. Create a superuser:
 
 ```bash
 python manage.py createsuperuser
 ```
 
-## Usage
+## Development
 
-### Starting the servers
+### Starting the backend
 
-1. Start the Celery worker:
+1. Start the Redis server (required for Celery):
+
+```bash
+# Windows (using WSL or Docker)
+docker run -p 6379:6379 redis
+
+# Unix/MacOS
+redis-server
+```
+
+2. Start the Celery worker:
 
 ```bash
 celery -A core worker --loglevel=info
 ```
 
-2. Start the web server:
+3. Start the Django/FastAPI server:
 
 ```bash
 uvicorn core.asgi:app --reload
 ```
 
+### Starting the frontend
+
+```bash
+cd frontend
+npm run dev
+```
+
 ### Accessing the application
 
+- **Frontend**: http://localhost:3000
 - **API Documentation**: http://localhost:8000/api/docs
 - **Admin Interface**: http://localhost:8000/django/admin/
 
@@ -197,11 +231,16 @@ scraper_project/
 
 - **Django**: Core application framework and ORM
 - **FastAPI**: High-performance API endpoints
+- **Next.js**: React framework for the frontend
 - **Celery**: Asynchronous task processing
 - **Claude 3.7**: Advanced AI reasoning with extended thinking
 - **Firecrawl**: Powerful web extraction
 - **Chroma/HuggingFace**: Vector storage for semantic search
-- **PostgreSQL**: Primary database
+- **PostgreSQL**: Primary database (optional)
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
